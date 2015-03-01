@@ -20,7 +20,16 @@ This tool was made for the Italian Steins;Gate Project!
 If you use it, just mention where you took it from!
 
 # How it works?
-Simply. Build the project, move the nss folder you decompiled with the archive tool in the same folder as the executable and execute it, will create a folder called extracted.
+The tool is based of the idea that for our project we need only dialogues.
+Well, after I've analyzed the NSB files, I found out that texts of the game
+are saved inside the tags <PRE></PRE>, so everything is inside those tags are dialogues,
+and also set person who is talking, the animation etc.
+
+So, I'm going through every single file, and check out for those tags,
+and, when I found them, I save them and after I'm going to write them down to a file txt.
+
+# How to make it works?
+Move the nss folder you decompiled with the archive tool in the same folder as the executable and execute it, will create a folder called extracted.
 
 Enjoy
 
