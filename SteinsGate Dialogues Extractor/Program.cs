@@ -44,16 +44,16 @@ namespace SteinsGate_Text_Extractor
                       
                            Press any key to start...    
                                                          ");
-            Console.ReadLine();
+            Console.ReadKey();
             Console.WriteLine("After analyzed your NSB Files, I will start extract your dialogs!!");
-            Console.WriteLine();
+            Console.ReadKey();
 
 
             if (Directory.Exists("nss"))
             {
                 foreach (string file in Directory.EnumerateFiles("nss"))
                 {
-                    if (file.Contains(".nsb")) // && file.Contains("sg") && !file.Contains("function"))
+                    if (file.Contains(".nsb") && file.Contains("sg") && !file.Contains("function"))
                     {
                         BinaryReader br = new BinaryReader(File.OpenRead(file));
 
@@ -70,7 +70,7 @@ namespace SteinsGate_Text_Extractor
             {
                 Console.WriteLine("There's no 'nss' folder! Put nss folder in directory with the executable!");
                 Console.WriteLine("Press any key to close...");
-                Console.ReadLine();
+                Console.ReadKey();
             }
         }
 
@@ -98,7 +98,7 @@ namespace SteinsGate_Text_Extractor
                     Length = nsbFile.ReadUInt32();
                     buffer = nsbFile.ReadBytes((int)Length);
                     Text = Encoding.Unicode.GetString(buffer);
-                    if (Text.Contains("<PRE") && !Text.Contains("<PRE>.</PRE>"))
+                    if (Text.Contains("<PRE") && !Text.Contains("<PRE>.</PRE>")) //That second condition is for extra_tips descriptions ( No used anymore )
                         index.Add((int)Entry);
 
                     currLine.param[i] = Text;
