@@ -82,6 +82,7 @@ namespace SteinsGate_Text_Extractor
             int point = 0;
             byte[] buffer;
             string Text = String.Empty;
+            bool hasChapter = false;
 
             while (point < nsbFile.BaseStream.Length)
             {
@@ -98,6 +99,16 @@ namespace SteinsGate_Text_Extractor
                     Length = nsbFile.ReadUInt32();
                     buffer = nsbFile.ReadBytes((int)Length);
                     Text = Encoding.Unicode.GetString(buffer);
+                    if (Text == "$CHAPTER_NOW")
+                    {
+                        index.Add((int)Entry);
+                        hasChapter = true;
+                    }
+                    else if (hasChapter && Text != "STRING")
+                    {
+                        index.Add((int) Entry);
+                        hasChapter = false;
+                    }
                     if (Text.Contains("<PRE") && !Text.Contains("<PRE>.</PRE>")) //That second condition is for extra_tips descriptions ( No used anymore )
                         index.Add((int)Entry);
 
@@ -128,9 +139,15 @@ namespace SteinsGate_Text_Extractor
 
             int countText = index.Count;
 
-            for(int i = 0 ; i < countText; i++)
+            for (int i = 0; i < countText; i++)
             {
-                sw.Write(Source[index[i]].param[2] + '\n' + '\n');
+                if (Source[index[i]].param[0] == "$CHAPTER_NOW")
+                {
+                    i++;
+                    sw.Write("<ChapterName>" + Source[index[i]].param[1] + "</ChapterName>" + '\n' + '\n');
+                }
+                else
+                    sw.Write(Source[index[i]].param[2] + '\n' + '\n');
             }
 
             Array.Clear(Source, 0, Source.Length);
